@@ -18,6 +18,6 @@ useEffect(()=> {
         {movies.map(movie=> <div>{movie.title}</div>)}
       </div>
   );
-};
+}
 
 export default App;
