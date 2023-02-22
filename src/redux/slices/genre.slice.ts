@@ -8,6 +8,7 @@ const initialState: IGenreState = {
 }
 
 
+
 const getGenres = createAsyncThunk<IGenre[], void>(
     'genreSlice/getGenres',
     async (_, {rejectWithValue}) => {
