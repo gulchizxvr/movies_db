@@ -12,7 +12,7 @@ const MoviesList = () => {
 
     const [query, setQuery] = useSearchParams()
 
-    let page: number = Number(query.get("page"))
+    let page: number|null = Number(query.get("page"))
     let genre = query.get('genre')
     let value = query.get('search')
 
@@ -34,7 +34,7 @@ const MoviesList = () => {
 
     if(loading){
         return <div>
-            <p>{JSON.stringify(loading)}</p>
+            <p>loading</p>
         </div>
     }
 

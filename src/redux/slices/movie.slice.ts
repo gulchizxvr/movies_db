@@ -11,7 +11,7 @@ import {IMoviesState} from "../../interfaces";
 
 const initialState: IMoviesState = {
     movies: [],
-    movie: {},
+    movie: null,
     error: undefined,
     loading:false,
     totalPages: 0,
@@ -19,9 +19,9 @@ const initialState: IMoviesState = {
 }
 
 
-const getMovies = createAsyncThunk<IResponse,number>(
+const getMovies = createAsyncThunk<IResponse,number|null>(
     'movieSlice/getMovies',
-    async (page:number,{rejectWithValue}) => {
+    async (page:number|null,{rejectWithValue}) => {
         try {
             const {data}:{data:IResponse} = await movieService.getMovies(page)
             return data
@@ -129,6 +129,7 @@ const movieSlice = createSlice({
             })
             .addCase(getCurrentMovie.pending, (state) => {
                 state.loading = true
+                state.movie = null
 
             })
 

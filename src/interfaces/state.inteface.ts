@@ -3,7 +3,7 @@ import {IMoviesDetails} from "./movie.interface";
 
 export interface IMoviesState {
     movies: IMovie[],
-    movie: IMoviesDetails | {},
+    movie: IMoviesDetails | null,
 
     error: string|undefined,
     loading: boolean,
