@@ -11,19 +11,20 @@ import {IMoviesState} from "../../interfaces";
 
 const initialState: IMoviesState = {
     movies: [],
-    movie: null,
-    currentMovie: false,
+    movie: {},
     error: undefined,
-    loading:false
+    loading:false,
+    totalPages: 0,
+    totalResults: 0
 }
 
 
-const getMovies = createAsyncThunk<IMovie[],number>(
+const getMovies = createAsyncThunk<IResponse,number>(
     'movieSlice/getMovies',
     async (page:number,{rejectWithValue}) => {
         try {
             const {data}:{data:IResponse} = await movieService.getMovies(page)
-            return data.results
+            return data
             }
         catch (e) {
             const err = e as AxiosError
@@ -83,8 +84,10 @@ const movieSlice = createSlice({
     extraReducers: builder =>
         builder
             .addCase(getMovies.fulfilled, (state, action) => {
-                state.movies = action.payload
+                state.movies = action.payload.results
+                state.totalPages = action.payload.total_pages
                 state.loading = false
+                state.totalResults = action.payload.total_results
             })
             .addCase(getMovies.pending, state => {
                 state.loading = true
@@ -126,6 +129,7 @@ const movieSlice = createSlice({
             })
             .addCase(getCurrentMovie.pending, (state) => {
                 state.loading = true
+
             })
 
 

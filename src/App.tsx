@@ -1,23 +1,15 @@
 import React, {useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from "./hooks/redux.hook";
-import {movieActions} from "./redux";
+import {Route, Routes} from "react-router-dom";
+import {MoviePage} from "./pages/MoviePages/MoviePage";
+import {MoviesDetail} from "./pages/MoviesDetail/MoviesDetail";
 
 const App = () => {
-
-
-  const {movies} = useAppSelector(state => state.movieReducer);
-  const dispatch = useAppDispatch()
-
-useEffect(()=> {
-  dispatch(movieActions.getMovies(1))
-}, [dispatch])
-
-  return (
-
-      <div>
-        {movies.map(movie=> <div>{movie.title}</div>)}
-      </div>
-  );
+    return (
+        <Routes>
+            <Route path={'/'} element={<MoviePage/>}/>
+            <Route path={':id'} element={<MoviesDetail/>}/>
+        </Routes>
+    )
 }
 
 export default App;

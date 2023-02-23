@@ -23,9 +23,5 @@ export type {
 }
 
 export {setupStore}
-export const setupStore = configureStore({
-    reducer:{
-        movie: movieReducer
-    }
-})
+
 
