@@ -23,5 +23,6 @@ export interface IMoviesDetails {
     status: string,
     title:string,
     vote_average: number,
+    tagline: string
 
 }

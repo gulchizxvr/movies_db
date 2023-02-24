@@ -20,7 +20,7 @@ const MoviesList = () => {
         dispatch(movieActions.getMovies(page))
     }, [page])
 
-    if (totalResults < 0)
+    if (totalResults <= 0)
         return <div>
             <h1>No movies matching your search</h1>
         </div>
@@ -40,7 +40,7 @@ const MoviesList = () => {
 
     return (
         <div>
-            {totalResults > 0 ? (movies.map((movie,index)=> <MovieCard key={index} movie={movie}/>)) : null}
+            {movies.map((movie,index)=> <MovieCard movie={movie} key={index}/> )}
         </div>
     );
 };
