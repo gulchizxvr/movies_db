@@ -3,24 +3,39 @@ import {useSearchParams} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux.hook";
 import {movieActions} from "../../redux";
 import {MovieCard} from "../MovieCard/MovieCard";
+import {genreActions} from "../../redux/slices/genre.slice";
 
 
 const MoviesList = () => {
 
     const dispatch = useAppDispatch()
-    const {movies, totalResults, loading,error} = useAppSelector(state => state.movieReducer);
+    const {movies, totalResults, loading, error} = useAppSelector(state => state.movieReducer);
 
     const [query, setQuery] = useSearchParams()
 
-    let page: number|null = Number(query.get("page"))
+
+    let page: number
+    (query.get('page') !== null ? page = Number(query.get("page")) : page = 1)
+
     let genre = query.get('genre')
+
     let value = query.get('search')
 
     useEffect(() => {
-        dispatch(movieActions.getMovies(page))
-    }, [page])
+        if (value) {
+            dispatch(movieActions.getSearchedMovies({value, page}))
+        }
+        else if (genre){
+            dispatch(movieActions.getMoviesWithGenre({genre, page}))
+        }
+        else {
+            dispatch(movieActions.getMovies(Number(page)))
+        }
+        dispatch(genreActions.getGenres())
+    }, [page, value,genre])
 
-    if (totalResults <= 0)
+
+    if (totalResults < 0)
         return <div>
             <h1>No movies matching your search</h1>
         </div>
@@ -32,7 +47,7 @@ const MoviesList = () => {
         </div>
     }
 
-    if(loading){
+    if (loading) {
         return <div>
             <p>loading</p>
         </div>
@@ -40,7 +55,7 @@ const MoviesList = () => {
 
     return (
         <div>
-            {movies.map((movie,index)=> <MovieCard movie={movie} key={index}/> )}
+            {movies.map((movie, index) => <MovieCard movie={movie} key={index}/>)}
         </div>
     );
 };

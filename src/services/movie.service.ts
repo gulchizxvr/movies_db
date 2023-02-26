@@ -8,11 +8,11 @@ import {IGenreState} from "../interfaces";
 export type AxiosRes<T> = Promise<AxiosResponse<T>>
 
 const movieService = {
-    getMovies:(page:number|null):AxiosRes<IResponse>=> axiosService.get(url.getAllMovie, {params:{page}}),
+    getMovies:(page:number=1):AxiosRes<IResponse>=> axiosService.get(url.getAllMovie, {params:{page}}),
     getGenre : ():AxiosRes<IGenreState> => axiosService.get(url.getGenre),
     getMovie : (id:number):AxiosRes<IMoviesDetails> => axiosService(`${url.getMovie}/${id}`),
-    getMoviesGenre: (genre:string,page:number):AxiosRes<IResponse> => axiosService(url.getAllMovie, {params:{with_genres:genre,page}}),
-    getSearchedMovies: (value:string,page:number):AxiosRes<IResponse> => axiosService(url.findMovies, {params:{query:value,page}}),
+    getMoviesGenre: (genre:string,page=1):AxiosRes<IResponse> => axiosService(url.getAllMovie, {params:{with_genres:genre,page}}),
+    getSearchedMovies: (value: string, page:number = 1):AxiosRes<IResponse> => axiosService(url.findMovies, {params:{query:value,page}}),
     getInfo: ():Promise<[]>=> axiosService.get(url.getInfo)
 }
 

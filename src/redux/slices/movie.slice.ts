@@ -5,7 +5,7 @@ import {AxiosError} from "axios";
 import {movieService} from "../../services";
 
 import {IMovie, IResponse} from "../../interfaces";
-import { IMoviesDetails } from "../../interfaces";
+import {IMoviesDetails} from "../../interfaces";
 import {IMoviesState} from "../../interfaces";
 
 
@@ -13,68 +13,65 @@ const initialState: IMoviesState = {
     movies: [],
     movie: null,
     error: undefined,
-    loading:false,
+    loading: false,
     totalPages: 0,
     totalResults: 0
 }
 
 
-const getMovies = createAsyncThunk<IResponse,number|null>(
+const getMovies = createAsyncThunk<IResponse, number>(
     'movieSlice/getMovies',
-    async (page:number|null,{rejectWithValue}) => {
+    async (page: number, {rejectWithValue}) => {
         try {
-            const {data}:{data:IResponse} = await movieService.getMovies(page)
+            const {data}: { data: IResponse } = await movieService.getMovies(page)
             return data
-            }
-        catch (e) {
+        } catch (e) {
             const err = e as AxiosError
             return rejectWithValue(err.response?.data)
         }
     }
 )
 
-const getCurrentMovie = createAsyncThunk<IMoviesDetails,number>(
+const getCurrentMovie = createAsyncThunk<IMoviesDetails, number>(
     'movieSlice/getCurrentMovie',
-    async (id,{rejectWithValue}) => {
+    async (id, {rejectWithValue}) => {
         try {
             const {data} = await movieService.getMovie(id)
             return data
-        }
-        catch (e) {
+        } catch (e) {
             const err = e as AxiosError
             return rejectWithValue(err.response?.data)
         }
     }
 )
 
-const getMoviesWithGenre = createAsyncThunk<IMovie[], { genre:string, page:number }>(
+const getMoviesWithGenre = createAsyncThunk<IMovie[], { genre: string, page: number }>(
     'movieSlice/getMoviesWithGenre',
-        async ({genre,page}, {rejectWithValue}) => {
-            try {
-                const {data} = await movieService.getMoviesGenre(genre,page)
-                return data.results
+    async ({genre, page}, {rejectWithValue}) => {
+        try {
+            const {data} = await movieService.getMoviesGenre(genre, page)
+            return data.results
 
-            } catch (e) {
-                const err = e as AxiosError
-                return rejectWithValue(err.response?.data)
-            }
+        } catch (e) {
+            const err = e as AxiosError
+            return rejectWithValue(err.response?.data)
         }
+    }
 )
 
-const getSearchedMovies = createAsyncThunk<IMovie[], { value:string, page:number }>(
+const getSearchedMovies = createAsyncThunk<IMovie[], { value: string, page: number }>(
     'movieSlice/getSearchedMovies',
-        async ({value,page}, {rejectWithValue}) => {
-            try {
-                const {data}:{data:IResponse} = await movieService.getSearchedMovies(value,page)
-                return data.results
+    async ({value, page}, {rejectWithValue}) => {
+        try {
+            const {data}: { data: IResponse } = await movieService.getSearchedMovies(value, page)
+            return data.results
 
-            } catch (e) {
-                const err = e as AxiosError
-                return rejectWithValue(err.response?.data)
-            }
+        } catch (e) {
+            const err = e as AxiosError
+            return rejectWithValue(err.response?.data)
         }
+    }
 )
-
 
 
 const movieSlice = createSlice({
@@ -94,6 +91,7 @@ const movieSlice = createSlice({
             })
             .addCase(getMovies.rejected, (state, action) => {
                 state.error = action.error.message
+                state.loading = false
             })
 
 
@@ -108,7 +106,7 @@ const movieSlice = createSlice({
                 state.error = action.error.message
             })
 
-            .addCase(getSearchedMovies.fulfilled,(state,action)=>{
+            .addCase(getSearchedMovies.fulfilled, (state, action) => {
                 state.movies = action.payload
                 state.loading = false
             })
@@ -120,11 +118,11 @@ const movieSlice = createSlice({
             })
 
 
-            .addCase(getCurrentMovie.fulfilled, (state,action) =>{
+            .addCase(getCurrentMovie.fulfilled, (state, action) => {
                 state.movie = action.payload
                 state.loading = false
             })
-            .addCase(getCurrentMovie.rejected, (state, action)=>{
+            .addCase(getCurrentMovie.rejected, (state, action) => {
                 state.error = action.error.message
             })
             .addCase(getCurrentMovie.pending, (state) => {
