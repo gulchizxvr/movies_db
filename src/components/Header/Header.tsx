@@ -4,6 +4,8 @@ import {useSearchParams} from "react-router-dom";
 import {genreActions} from "../../redux/slices/genre.slice";
 
 import Buttons from '../Buttons/Buttons';
+import Profile from '../Profile/Profile';
+import {profileActions} from "../../redux/slices/profile.slice";
 
 const Header: FC = () => {
 
@@ -11,12 +13,14 @@ const Header: FC = () => {
     const {genres} = useAppSelector(state => state.genreReducer)
     const {theme} = useAppSelector(state => state.themeReducer)
 
+
     const [query, setQuery] = useSearchParams()
 
     const [searching, setSearching] = useState("");
 
     useEffect(() => {
         dispatch(genreActions.getGenres())
+        dispatch(profileActions.getInfoProfile())
     }, [dispatch])
 
 
@@ -66,6 +70,7 @@ const Header: FC = () => {
 
                 <button onClick={submit}>search</button>
             </div>
+            <Profile/>
             <Buttons/>
         </div>
 
