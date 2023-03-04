@@ -5,10 +5,12 @@ import {MoviesDetail} from "./pages/MoviesDetail/MoviesDetail";
 
 const App = () => {
     return (
-        <Routes>
-            <Route path={'/'} element={<MoviePage/>}/>
-            <Route path={':id'} element={<MoviesDetail/>}/>
-        </Routes>
+        <div>
+            <Routes>
+                <Route path={'/'} element={<MoviePage/>}/>
+                <Route path={':id'} element={<MoviesDetail/>}/>
+            </Routes>
+        </div>
     )
 }
 

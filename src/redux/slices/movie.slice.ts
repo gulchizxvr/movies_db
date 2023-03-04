@@ -88,6 +88,7 @@ const movieSlice = createSlice({
             })
             .addCase(getMovies.pending, state => {
                 state.loading = true
+                state.movies = []
             })
             .addCase(getMovies.rejected, (state, action) => {
                 state.error = action.error.message

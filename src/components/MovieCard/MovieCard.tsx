@@ -2,6 +2,7 @@ import React, {FC, useEffect} from 'react';
 import {IGenre, IMovie} from "../../interfaces";
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../hooks/redux.hook";
+import css from "./MovieListCard.module.css"
 
 import {genreActions} from "../../redux/slices/genre.slice";
 import {Rating} from "@mui/material";
@@ -25,6 +26,7 @@ const MovieCard:FC<IMovieCardProps> = ({movie}) => {
 
 
     const {genres} = useAppSelector(state => state.genreReducer)
+    const {theme} = useAppSelector(state => state.themeReducer)
 
     const genresOfMovie:string[] = []
 
@@ -40,15 +42,22 @@ const MovieCard:FC<IMovieCardProps> = ({movie}) => {
     }
 
     return (
-            <div onClick={toDetails} style={{border:"1px solid black"}}>
-                <div>
-                    {genresOfMovie.map((genre, index) => <div>{genre}</div>)}
-                </div>
+        <div className={`${css.card} ${theme === 'light' ? css.light : css.dark}`} onClick={toDetails}>
 
-                <div><h4>{title}</h4></div>
-                {vote_average}
+            <div className={css.poster}>
+                {(poster_path) ? <img src={"https://image.tmdb.org/t/p/w300" + poster_path} alt={poster_path}/>  :
+                    <div className={css.errorPoster}>
+                        <h2>Error image</h2></div>}
             </div>
+
+            <div className={css.badge}>
+                {genresOfMovie.map((genre, index) => <Badge genre={genre} key={index}/>)}
+            </div>
+            <div className={css.text}><h4>{title}</h4></div>
+            {vote_average && <Rating value={vote_average} precision={0.1} max={10} readOnly/>}
+            {vote_average}
+        </div>
     );
-};
+}
 
 export {MovieCard}

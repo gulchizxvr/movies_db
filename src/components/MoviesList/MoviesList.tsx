@@ -4,12 +4,15 @@ import {useAppDispatch, useAppSelector} from "../../hooks/redux.hook";
 import {movieActions} from "../../redux";
 import {MovieCard} from "../MovieCard/MovieCard";
 import {genreActions} from "../../redux/slices/genre.slice";
+import css from './MovieList.module.css'
+import ReactLoading from "react-loading";
 
 
 const MoviesList = () => {
 
     const dispatch = useAppDispatch()
     const {movies, totalResults, loading, error} = useAppSelector(state => state.movieReducer);
+    const {theme} = useAppSelector(state => state.themeReducer)
 
     const [query, setQuery] = useSearchParams()
 
@@ -47,17 +50,28 @@ const MoviesList = () => {
         </div>
     }
 
-    if (loading) {
-        return <div>
-            <p>loading</p>
-        </div>
-    }
+    // if (loading) {
+    //     return <div>
+    //         <p>loading</p>
+    //     </div>
+    // }
 
     return (
-        <div>
-            {movies.map((movie, index) => <MovieCard movie={movie} key={index}/>)}
+        <div className={css.listWrap}>
+
+            {loading &&  <div style={{height:"80vh", display:"flex", alignItems:"center" }}><ReactLoading type="spokes" color="#0000FF"
+                                                                                                          height={150} width={100} /></div>}
+            {error ?
+                <div className={`${css.state} ${theme === 'light' ? css.light : css.dark}`}><h2>Error</h2></div> : null}
+
+            <div className={css.cardWrap}>
+                {movies.map((movie, index) => <MovieCard movie={movie} key={index}/>)}
+
+            </div>
         </div>
     );
 };
+
+
 
 export {MoviesList}

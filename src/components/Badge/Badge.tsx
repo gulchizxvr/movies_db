@@ -1,7 +1,9 @@
 import React, {FC} from 'react';
 import {useAppSelector} from "../../hooks/redux.hook";
-import {CBadge} from "@coreui/react";
 
+
+import css from "./Badge.module.css"
+import {CBadge} from "@coreui/react";
 
 interface IGenreProps {
     genre: string
@@ -9,8 +11,9 @@ interface IGenreProps {
 const Badge: FC<IGenreProps> = ({genre}) => {
 
     const {theme} = useAppSelector(state => state.themeReducer)
+
     return (
-        <div>
+        <div className={css.badges}>
             <CBadge color={theme === 'light' ? 'dark' : 'danger'} shape="rounded-pill">
                 <span>{genre}</span>
             </CBadge>

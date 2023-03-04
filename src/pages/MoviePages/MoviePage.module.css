@@ -1,0 +1,10 @@
+.wrapper{
+    min-height: 100vh;
+    max-width: 100vw;
+}
+.dark {
+    background: #282c34;
+}
+.light{
+    background: #e0dede;
+}

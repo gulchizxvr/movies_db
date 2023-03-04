@@ -2,10 +2,12 @@ import React, {FC, MouseEventHandler, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../hooks/redux.hook";
 import {useSearchParams} from "react-router-dom";
 import {genreActions} from "../../redux/slices/genre.slice";
+import css from "./Header.module.css"
 
 import Buttons from '../Buttons/Buttons';
 import Profile from '../Profile/Profile';
 import {profileActions} from "../../redux/slices/profile.slice";
+import { Switcher } from '../Switcher/Switcher';
 
 const Header: FC = () => {
 
@@ -54,25 +56,64 @@ const Header: FC = () => {
 
 
     return (
-        <div>
-            {genres ? <div>Ganru</div> : null}
+        // <div>
+        //     {genres ? <div>Ganru</div> : null}
+        //
+        //     <div>
+        //         <input type="text" placeholder={"Введіть слово для пошуку"}
+        //                onChange={handleChange}
+        //                id={'searchValue'}
+        //                value={searching}
+        //         />
+        //         {searching &&
+        //             <button onClick={clear}>
+        //                 {/*<ClearIcon fontSize="small"/>*/}
+        //             </button>}
+        //
+        //         <button onClick={submit}>search</button>
+        //     </div>
+        //     <Profile/>
+        //     <Buttons/>
+        // </div>
+        <div className={css.header}>
 
-            <div>
-                <input type="text" placeholder={"Введіть слово для пошуку"}
-                       onChange={handleChange}
-                       id={'searchValue'}
-                       value={searching}
-                />
-                {searching &&
-                    <button onClick={clear}>
-                        {/*<ClearIcon fontSize="small"/>*/}
-                    </button>}
+            <div className={css.head}>
 
-                <button onClick={submit}>search</button>
+                <Switcher/>
+
+                <div className={css.inputLine}>
+                    <input type="text" placeholder={"Введіть слово для пошуку"}
+                           // onChange={changeValue}
+                           id={'searchValue'}/>
+                    {searching &&
+                        <button className={css.clearButton} onClick={() => clear()}>
+                            {/*<ClearIcon fontSize="small"/>*/}
+                            gkasjdgkl
+                        </button>}
+
+                    <button onClick={submit} disabled={!searching}>search</button>
+                </div>
+
+                <Profile/>
+
             </div>
-            <Profile/>
-            <Buttons/>
+
+            {/*<div className={css.buttonsGenre}>*/}
+            {/*    {currentMovie &&*/}
+            {/*        (query.get("search") ?*/}
+
+            {/*            <div className={`${css.removeSearch} ${theme==='light' ? css.light : css.dark}`} */}
+            {/*                 onClick={() => deleteSearch()}>*/}
+            {/*                <h3>Delete "{query.get("search")}"</h3>*/}
+            {/*            </div>*/}
+
+            {/*            :*/}
+
+            {/*            <Buttons/>)}*/}
+            {/*</div>*/}
+
         </div>
+
 
 
     );
