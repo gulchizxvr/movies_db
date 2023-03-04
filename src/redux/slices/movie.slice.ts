@@ -4,16 +4,17 @@ import {AxiosError} from "axios";
 
 import {movieService} from "../../services";
 
-import {IMovie, IResponse} from "../../interfaces";
+import {IResponse} from "../../interfaces";
 import {IMoviesDetails} from "../../interfaces";
 import {IMoviesState} from "../../interfaces";
 
 
 const initialState: IMoviesState = {
+    currentMovie: false,
     movies: [],
     movie: null,
     error: undefined,
-    loading: false,
+    loading: true,
     totalPages: 0,
     totalResults: 0
 }
@@ -45,12 +46,12 @@ const getCurrentMovie = createAsyncThunk<IMoviesDetails, number>(
     }
 )
 
-const getMoviesWithGenre = createAsyncThunk<IMovie[], { genre: string, page: number }>(
+const getMoviesWithGenre = createAsyncThunk<IResponse, { genre: string, page: number }>(
     'movieSlice/getMoviesWithGenre',
     async ({genre, page}, {rejectWithValue}) => {
         try {
-            const {data} = await movieService.getMoviesGenre(genre, page)
-            return data.results
+            const {data}: {data:IResponse} = await movieService.getMoviesGenre(genre, page)
+            return data
 
         } catch (e) {
             const err = e as AxiosError
@@ -59,12 +60,12 @@ const getMoviesWithGenre = createAsyncThunk<IMovie[], { genre: string, page: num
     }
 )
 
-const getSearchedMovies = createAsyncThunk<IMovie[], { value: string, page: number }>(
+const getSearchedMovies = createAsyncThunk<IResponse, { value: string, page: number }>(
     'movieSlice/getSearchedMovies',
     async ({value, page}, {rejectWithValue}) => {
         try {
             const {data}: { data: IResponse } = await movieService.getSearchedMovies(value, page)
-            return data.results
+            return data
 
         } catch (e) {
             const err = e as AxiosError
@@ -77,13 +78,17 @@ const getSearchedMovies = createAsyncThunk<IMovie[], { value: string, page: numb
 const movieSlice = createSlice({
     name: "movieSlice",
     initialState,
-    reducers: {},
+    reducers: {
+        selectMovie: (state, action) => {
+            state.currentMovie = action.payload
+        }
+    },
     extraReducers: builder =>
         builder
             .addCase(getMovies.fulfilled, (state, action) => {
                 state.movies = action.payload.results
-                state.totalPages = action.payload.total_pages
                 state.loading = false
+                state.totalPages = action.payload.total_pages
                 state.totalResults = action.payload.total_results
             })
             .addCase(getMovies.pending, state => {
@@ -97,25 +102,33 @@ const movieSlice = createSlice({
 
 
             .addCase(getMoviesWithGenre.fulfilled, (state, action) => {
-                state.movies = action.payload
+                state.movies = action.payload.results
                 state.loading = false
+                state.totalPages = action.payload.total_pages
+                state.totalResults = action.payload.total_results
             })
             .addCase(getMoviesWithGenre.pending, (state) => {
                 state.loading = true
             })
             .addCase(getMoviesWithGenre.rejected, (state, action) => {
                 state.error = action.error.message
+                state.loading = false
             })
 
+
             .addCase(getSearchedMovies.fulfilled, (state, action) => {
-                state.movies = action.payload
+                state.movies = action.payload.results
                 state.loading = false
+                state.totalPages = action.payload.total_pages
+                state.totalResults = action.payload.total_results
             })
             .addCase(getSearchedMovies.pending, (state) => {
                 state.loading = true
+                state.movies = []
             })
             .addCase(getSearchedMovies.rejected, (state, action) => {
                 state.error = action.error.message
+                state.loading = false
             })
 
 
@@ -125,6 +138,7 @@ const movieSlice = createSlice({
             })
             .addCase(getCurrentMovie.rejected, (state, action) => {
                 state.error = action.error.message
+                state.loading = false
             })
             .addCase(getCurrentMovie.pending, (state) => {
                 state.loading = true
@@ -135,13 +149,14 @@ const movieSlice = createSlice({
 
 })
 
-const {reducer: movieReducer} = movieSlice
+const {reducer: movieReducer, actions:{selectMovie}} = movieSlice
 
 const movieActions = {
     getMovies,
     getMoviesWithGenre,
     getCurrentMovie,
-    getSearchedMovies
+    getSearchedMovies,
+    selectMovie
 }
 
 export {

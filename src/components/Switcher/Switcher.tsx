@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 
 
 
-import css from "./Switcher.module.css"
+import "./switcher.style.scss"
 import {Switch} from "@mui/material";
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 
-import {useAppDispatch} from "../../hooks/redux.hook";
-import { themeActions } from '../../redux/slices/theme.slice';
+import {useAppDispatch} from "../../hooks";
+import { themeActions } from '../../redux';
 
 
 const Switcher = () => {
@@ -30,7 +30,7 @@ const Switcher = () => {
     }
 
     return (
-        <div className={`${css.switcher} ${theme==='light' ? css.light : css.dark}`}>
+        <div className={`switcher ${theme==='light' ? "light" :"dark"}`}>
             <LightModeIcon/>
             <Switch onClick={() => change()} checked={theme === "dark"}/>
             <DarkModeIcon/>

@@ -1,7 +1,10 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
-import {useAppSelector} from "../../hooks/redux.hook";
+
+import {useAppSelector} from "../../hooks";
 import { Button } from '../Button/Button';
+
+import "./buttons.style.scss"
 
 const Buttons = () => {
     let [query, setQuery] = useSearchParams();
@@ -18,17 +21,17 @@ const Buttons = () => {
     }
 
     if (query.get("genre")) {
-        return (<div>
-            <button  onClick={() => setGenre(0)}>Go to all genres</button>
+        return (<div className="buttonsAll">
+            <button className={`${theme === "light" ? "light" : "dark"}`} onClick={() => setGenre(0)}>Go to all genres</button>
         </div>)
     }
 
-    return (<div>
+    return (<div className={`chooseGenre ${theme === "light" ? "light" : "dark"}`}>
             <h2>You can choose:</h2>
-            <div >
+            <div className='buttons'>
                 {genres.map((genre) => <Button genre={genre} setGenre={setGenre} key={genre.id}/>)}
             </div>
         </div>
     );
 };
-export default Buttons;
+export {Buttons}

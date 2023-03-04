@@ -1,17 +1,21 @@
-import React from 'react';
-import { useAppSelector } from '../../hooks/redux.hook';
+import React, { FC } from 'react';
 
-
-
+import { useAppSelector } from '../../hooks';
 import {IGenre} from "../../interfaces";
+import "./button.style.scss"
 
-const Button = ({genre,setGenre}:{genre:IGenre,setGenre:Function}) => {
+interface IButtonProps{
+    genre:IGenre,
+    setGenre: Function
+}
+const Button:FC<IButtonProps> = ({genre,setGenre}) => {
 
     const {theme}=useAppSelector(state => state.themeReducer)
 
     return (
-        <div>
-            <button onClick={()=> setGenre(genre.id)}>{genre.name}</button>
+        <div className='oneButton'>
+            <button className={`${theme === "light" ? "lightButton": "darkButton"}`}
+                    onClick={()=> setGenre(genre.id)}>{genre.name}</button>
         </div>
     );
 };

@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
-import {useAppSelector} from "../../hooks/redux.hook";
-import css from "./Profile.module.css"
+
+import {useAppSelector} from "../../hooks";
+import "./profile.style.scss"
 
 const Profile:FC = () => {
 
@@ -10,11 +11,11 @@ const Profile:FC = () => {
 
 
     return (
-        <div className={`${css.profile} ${theme==="light" ? css.light : css.dark}`}>
+        <div className={`profile ${theme==="light" ? "light" : "dark"}`}>
             <h4>Welcome, {username}!</h4>
             {avatar && <img src={"https://image.tmdb.org/t/p/w300" + avatar.tmdb?.avatar_path} alt=""/>}
         </div>
     );
 };
 
-export default Profile;
+export {Profile}

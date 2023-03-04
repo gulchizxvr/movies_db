@@ -1,94 +1,71 @@
-import React, {FC, MouseEventHandler, useEffect, useState} from 'react';
-import {useAppDispatch, useAppSelector} from "../../hooks/redux.hook";
+import React, {FC, useEffect, useState} from 'react';
 import {useSearchParams} from "react-router-dom";
-import {genreActions} from "../../redux/slices/genre.slice";
-import css from "./Header.module.css"
 
-import Buttons from '../Buttons/Buttons';
-import Profile from '../Profile/Profile';
-import {profileActions} from "../../redux/slices/profile.slice";
-import { Switcher } from '../Switcher/Switcher';
+
+import ClearIcon from '@mui/icons-material/Clear';
+import {useAppDispatch, useAppSelector} from "../../hooks";
+import {genreActions} from "../../redux";
+import {profileActions} from "../../redux";
+import {Buttons} from '../Buttons/Buttons';
+import {Profile} from '../Profile/Profile';
+import {Switcher} from '../Switcher/Switcher';
+import './header.style.scss'
 
 const Header: FC = () => {
 
     const dispatch = useAppDispatch()
-    const {genres} = useAppSelector(state => state.genreReducer)
+
     const {theme} = useAppSelector(state => state.themeReducer)
+    const {currentMovie} = useAppSelector(state => state.movieReducer)
 
 
     const [query, setQuery] = useSearchParams()
 
     const [searching, setSearching] = useState("");
+    console.log(searching);
 
     useEffect(() => {
         dispatch(genreActions.getGenres())
         dispatch(profileActions.getInfoProfile())
     }, [dispatch])
 
-
-    const submit: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    const submit: React.MouseEventHandler<HTMLButtonElement> = () => {
         if (searching) {
-
-            query.set("search", searching)
-
             query.delete('genre')
+            query.set("search", searching)
             setQuery(query)
-        } else {
-            query.delete("search")
-            setQuery("")
         }
     }
 
-
     const clear = () => {
-        setSearching('')
         query.delete("search")
         setQuery(query)
+        setSearching('')
     }
 
 
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>):void=> {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         query.delete('page')
         setSearching(event.target.value);
     };
 
 
-
     return (
-        // <div>
-        //     {genres ? <div>Ganru</div> : null}
-        //
-        //     <div>
-        //         <input type="text" placeholder={"Введіть слово для пошуку"}
-        //                onChange={handleChange}
-        //                id={'searchValue'}
-        //                value={searching}
-        //         />
-        //         {searching &&
-        //             <button onClick={clear}>
-        //                 {/*<ClearIcon fontSize="small"/>*/}
-        //             </button>}
-        //
-        //         <button onClick={submit}>search</button>
-        //     </div>
-        //     <Profile/>
-        //     <Buttons/>
-        // </div>
-        <div className={css.header}>
+        <div className={`header ${theme === "light" ? "light" : "dark"}`}>
 
-            <div className={css.head}>
+            <div className='head'>
 
                 <Switcher/>
 
-                <div className={css.inputLine}>
+                <div className='inputLine'>
                     <input type="text" placeholder={"Введіть слово для пошуку"}
-                           // onChange={changeValue}
-                           id={'searchValue'}/>
+                           onChange={handleChange}
+                           id={'searchValue'}
+                           value={searching}/>
                     {searching &&
-                        <button className={css.clearButton} onClick={() => clear()}>
-                            {/*<ClearIcon fontSize="small"/>*/}
-                            gkasjdgkl
+                        <button className='clearButton' onClick={() => clear()}>
+                            <ClearIcon fontSize="small"/>
+
                         </button>}
 
                     <button onClick={submit} disabled={!searching}>search</button>
@@ -98,22 +75,21 @@ const Header: FC = () => {
 
             </div>
 
-            {/*<div className={css.buttonsGenre}>*/}
-            {/*    {currentMovie &&*/}
-            {/*        (query.get("search") ?*/}
+            <div className='buttonsGenre'>
+                {currentMovie &&
+                    (query.get("search") ?
 
-            {/*            <div className={`${css.removeSearch} ${theme==='light' ? css.light : css.dark}`} */}
-            {/*                 onClick={() => deleteSearch()}>*/}
-            {/*                <h3>Delete "{query.get("search")}"</h3>*/}
-            {/*            </div>*/}
+                        <div className={`removeSearch`}
+                             onClick={() => clear()}>
+                            <h3>Delete "{query.get("search")}"</h3>
+                        </div>
 
-            {/*            :*/}
+                        :
 
-            {/*            <Buttons/>)}*/}
-            {/*</div>*/}
+                        <Buttons/>)}
+            </div>
 
         </div>
-
 
 
     );

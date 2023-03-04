@@ -1,12 +1,15 @@
 import React, {FC, useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from "../../hooks/redux.hook";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 import {movieActions} from "../../redux";
-import {useParams, useSearchParams} from "react-router-dom";
-import {IMoviesDetails} from "../../interfaces";
-import css from "./MovieDetail.module.css"
-import {CBadge} from "@coreui/react";
+import {useParams} from "react-router-dom";
 
-const MoviesDetail: FC = () => {
+import "./movieDetailPage.style.scss"
+
+import {CBadge} from "@coreui/react";
+import { Rating } from '@mui/material';
+import {Loading} from "../../components/Loading/Loading";
+
+const MovieDetailPage: FC = () => {
 
     const {id} = useParams()
     const idParams = Number(id)
@@ -18,9 +21,9 @@ const MoviesDetail: FC = () => {
 
     useEffect(() => {
         dispatch(movieActions.getCurrentMovie(idParams))
-    }, [idParams])
+    }, [idParams,dispatch])
 
-    if (loading) return <div>Loa</div>
+    if (loading) return <Loading/>
 
     if (!movie) return null
 
@@ -30,40 +33,40 @@ const MoviesDetail: FC = () => {
         overview,
         genres,
         production_companies,
-        release_date,
         runtime,
-        status,
         tagline,
         title,
-        vote_average
+        vote_average,
+        status,
+        release_date
     } = movie
 
 
     return (
-        <div className={`${css.wrap} ${theme === "light" ? css.light : css.dark}`}>
-            <div className={css.poster}>
+        <div className={`wrapperDetail ${theme === "light" ? "light":"dark"}`}>
+            <div className="poster">
 
                 {poster_path && <img src={"https://image.tmdb.org/t/p/w400" + poster_path} alt={title}/>}
 
                 {(!loading && !poster_path) &&
-                    <div className={css.errorPoster}>
+                    <div className='errorPoster'>
                         <h2>Error image</h2>
                     </div>}
 
-                <div className={css.rating}>
-                    {/*{vote_average && <Rating value={vote_average} precision={0.1} max={10} readOnly/>}*/}
+                <div className="rating">
+                    {vote_average && <Rating value={vote_average} precision={0.1} max={10} readOnly/>}
                     <h5>Rate: {vote_average}</h5>
                 </div>
 
             </div>
 
-            <div className={css.description}>
+            <div className="description">
 
                 <h1>{title}</h1>
 
-                <div className={css.overview}>
+                <div className="css.overview">
 
-                    <div className={css.badges}>
+                    <div className="badges">
                         {genres?.map(genre =>
                             <div key={genre.id}>
                                 <CBadge color={theme === "light" ? "warning" : "danger"} shape="rounded-pill"
@@ -87,23 +90,22 @@ const MoviesDetail: FC = () => {
 
                 </div>
 
-                <div className={css.info}>
-                    {/*{status === 'Released'*/}
-                    {/*    ?*/}
-                    {/*    <div><h4>Release date : {release_date}</h4></div>*/}
-                    {/*    :*/}
-                    {/*    <div><h3>Not released</h3></div>}*/}
+                <div className='info'>
+                    {status === 'Released'
+                        ?
+                        (<h3>Release date : {release_date.toString()}</h3>)
+                        :
+                        (<h3>Not released</h3>)}
+
                     <h4>Running time: {runtime} minutes</h4>
 
 
-                    <div className={css.productBy}>
-
+                    <div className='productBy'>
                         <h3>Product by:</h3>
-
-                        <div className={css.logoCompanies}>
+                        <div className='logoCompanies'>
 
                             {production_companies?.map(company =>
-                                <div key={company.id} className={css.logo}>
+                                <div key={company.id} className='logo'>
                                     {company.logo_path ?
                                         <img src={"https://image.tmdb.org/t/p/w300" + company.logo_path}
                                              alt={company.name}/> :
@@ -123,4 +125,4 @@ const MoviesDetail: FC = () => {
     );
 };
 
-export {MoviesDetail}
+export {MovieDetailPage}

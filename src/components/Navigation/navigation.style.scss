@@ -1,0 +1,22 @@
+.navigation {
+    display: flex;
+    justify-content: flex-end;
+
+    width: 100%;
+    left: 500px;
+
+    .prevButton {
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+    .nextButton {
+        cursor: pointer;
+        margin-left: 5px;
+    }
+
+
+}
+
+
+

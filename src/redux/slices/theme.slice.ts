@@ -17,7 +17,7 @@ const themeSlice = createSlice({
     }
 })
 
-const {reducer : themeReducer, actions : {changeTheme}} = themeSlice
+const {reducer : themeReducer, actions:{changeTheme}} = themeSlice
 
 const themeActions = {
     changeTheme

@@ -1,17 +1,16 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Route, Routes} from "react-router-dom";
-import {MoviePage} from "./pages/MoviePages/MoviePage";
-import {MoviesDetail} from "./pages/MoviesDetail/MoviesDetail";
+import {MoviePage} from "./pages/MoviePage/MoviePage";
+import {MovieDetailPage} from "./pages/MovieDetailPage/MovieDetailPage";
+import "./App.scss"
 
 const App = () => {
     return (
-        <div>
+
             <Routes>
                 <Route path={'/'} element={<MoviePage/>}/>
-                <Route path={':id'} element={<MoviesDetail/>}/>
-            </Routes>
-        </div>
-    )
+                <Route path={':id'} element={<MovieDetailPage/>}/>
+            </Routes>)
 }
 
 export default App;
