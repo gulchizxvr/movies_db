@@ -1,13 +1,15 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import {movieActions} from "../../redux";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 import "./movieDetailPage.style.scss"
 
 import {CBadge} from "@coreui/react";
 import { Rating } from '@mui/material';
 import {Loading} from "../../components/Loading/Loading";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import {blue, green} from "@mui/material/colors";
 
 const MovieDetailPage: FC = () => {
 
@@ -15,9 +17,12 @@ const MovieDetailPage: FC = () => {
     const idParams = Number(id)
 
     const {movie, loading} = useAppSelector(state => state.movieReducer);
-    const {theme} = useAppSelector(state => state.themeReducer)
+
+    const defaultTheme:string|null = window.localStorage.getItem("theme")
+    const [theme, _] = useState(defaultTheme);
 
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
         dispatch(movieActions.getCurrentMovie(idParams))
@@ -44,6 +49,10 @@ const MovieDetailPage: FC = () => {
 
     return (
         <div className={`wrapperDetail ${theme === "light" ? "light":"dark"}`}>
+            <div className="buttonPrevious">
+                <ArrowBackIosNewIcon fontSize={"large"} sx={{color: theme === 'light' ? blue[500] : green[500]}} onClick={()=> navigate(-1)}>Previous
+                    page</ArrowBackIosNewIcon>
+            </div>
             <div className="poster">
 
                 {poster_path && <img src={"https://image.tmdb.org/t/p/w400" + poster_path} alt={title}/>}
@@ -64,7 +73,7 @@ const MovieDetailPage: FC = () => {
 
                 <h1>{title}</h1>
 
-                <div className="css.overview">
+                <div className="overview">
 
                     <div className="badges">
                         {genres?.map(genre =>

@@ -2,7 +2,6 @@ import {createSlice} from "@reduxjs/toolkit";
 
 import { ITheme } from "../../interfaces";
 
-
 const initialState:ITheme = {
     theme: 'light'
 }
