@@ -1,13 +1,10 @@
-
 import React, {FC} from 'react';
 
 import {useAppSelector} from "../../hooks";
+import {CBadge} from "@coreui/react";
 
 import '@coreui/coreui/dist/css/coreui.min.css'
-import {CBadge} from "@coreui/react";
 import './badgeSpan.style.scss'
-
-
 
 interface IGenreProps {
     genre: string

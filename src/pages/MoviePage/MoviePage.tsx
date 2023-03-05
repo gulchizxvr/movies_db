@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 
 import { MoviesList } from '../../components/MoviesList/MoviesList';
 import {Navigation} from "../../components/Navigation/Navigation";
@@ -8,7 +8,7 @@ import "./moviePage.style.scss"
 
 import {useAppSelector} from "../../hooks";
 
-const MoviePage = () => {
+const MoviePage:FC = () => {
     const {theme}=useAppSelector(state => state.themeReducer)
     const {totalResults} = useAppSelector(state => state.movieReducer)
 

@@ -1,14 +1,14 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useSearchParams} from "react-router-dom";
 
-
-import ClearIcon from '@mui/icons-material/Clear';
 import {useAppDispatch, useAppSelector} from "../../hooks";
+import ClearIcon from '@mui/icons-material/Clear';
 import {genreActions} from "../../redux";
 import {profileActions} from "../../redux";
 import {Buttons} from '../Buttons/Buttons';
 import {Profile} from '../Profile/Profile';
 import {Switcher} from '../Switcher/Switcher';
+
 import './header.style.scss'
 
 const Header: FC = () => {
@@ -29,7 +29,7 @@ const Header: FC = () => {
         dispatch(profileActions.getInfoProfile())
     }, [dispatch])
 
-    const submit: React.MouseEventHandler<HTMLButtonElement> = () => {
+    const submit: React.MouseEventHandler<HTMLButtonElement> = ():void => {
         if (searching) {
             query.delete('genre')
             query.set("search", searching)
@@ -37,7 +37,7 @@ const Header: FC = () => {
         }
     }
 
-    const clear = () => {
+    const clear = ():void => {
         query.delete("search")
         setQuery(query)
         setSearching('')

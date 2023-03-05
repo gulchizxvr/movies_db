@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 
 import { useAppSelector } from '../../hooks';
 import {IGenre} from "../../interfaces";
-import "./button.style.scss"
 
+import "./button.style.scss"
 interface IButtonProps{
     genre:IGenre,
     setGenre: Function

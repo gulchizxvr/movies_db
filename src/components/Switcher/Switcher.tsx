@@ -1,17 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 
-
-
-import "./switcher.style.scss"
+import {useAppDispatch} from "../../hooks";
+import { themeActions } from '../../redux';
 import {Switch} from "@mui/material";
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 
-import {useAppDispatch} from "../../hooks";
-import { themeActions } from '../../redux';
+import "./switcher.style.scss"
 
 
-const Switcher = () => {
+const Switcher:FC = () => {
 
     const dispatch = useAppDispatch()
 

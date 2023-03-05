@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import {useAppSelector} from "../../hooks";
@@ -6,7 +6,7 @@ import { Button } from '../Button/Button';
 
 import "./buttons.style.scss"
 
-const Buttons = () => {
+const Buttons : FC = () => {
     let [query, setQuery] = useSearchParams();
 
     const {theme}=useAppSelector(state => state.themeReducer)

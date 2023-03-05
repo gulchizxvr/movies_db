@@ -1,16 +1,16 @@
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import {useSearchParams} from 'react-router-dom';
 
 import {MovieCard} from "../MovieCard/MovieCard";
+import {Loading} from "../Loading/Loading";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import {movieActions} from "../../redux";
 import {genreActions} from "../../redux";
+
 import "./movieList.style.scss"
 
-import {Loading} from "../Loading/Loading";
 
-
-const MoviesList = () => {
+const MoviesList:FC= () => {
 
     const dispatch = useAppDispatch()
     
@@ -55,7 +55,6 @@ const MoviesList = () => {
         <div className="listWrap">
             <div className="cardWrap">
                 {movies.map((movie, index) => <MovieCard movie={movie} key={index}/>)}
-
             </div>
         </div>
     );

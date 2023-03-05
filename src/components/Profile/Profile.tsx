@@ -5,10 +5,8 @@ import "./profile.style.scss"
 
 const Profile:FC = () => {
 
-
     const {username,avatar} = useAppSelector(state => state.profileReducer)
     const {theme} = useAppSelector(state => state.themeReducer)
-
 
     return (
         <div className={`profile ${theme==="light" ? "light" : "dark"}`}>
