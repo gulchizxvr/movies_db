@@ -7,6 +7,8 @@ import "./movieCard.style.scss"
 import {BadgeSpan} from '../Badge/BadgeSpan';
 import {Rating} from "@mui/material";
 
+import { LazyLoadImage } from "react-lazy-load-image-component";
+
 interface IMovieCardProps {
     movie:IMovie
 }
@@ -36,7 +38,9 @@ const MovieCard:FC<IMovieCardProps> = ({movie}) => {
         <div className={`card ${theme === 'light' ? "dark" : "light"}`} style={{border:"none"}} onClick={toDetails}>
 
             <div className="posterCard">
-                {(poster_path) ? <img src={"https://image.tmdb.org/t/p/w300" + poster_path} alt={poster_path}/>  :
+                {(poster_path) ?
+                    <LazyLoadImage src={"https://image.tmdb.org/t/p/w300" + poster_path} width={300} height={450} alt={poster_path} placeholder={<div style={{background:"black", width:"300px", height:"450px"}}>kdflsk</div>}/>
+                    :
                     <div className="errorPoster">
                         <h2>Error image</h2></div>}
             </div>
